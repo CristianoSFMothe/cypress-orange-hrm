@@ -45,7 +45,19 @@ function set(el, text) {
   return set;
 }
 
+function get_text_index(el, index) {
+  waitElement(el)
+  let text
+  try {
+    text = cy.get(el).eq(index).invoke('text');
+    cy.log('Found the ' + el + ' with the index ' + index + ' and the text ' + text)
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return text;
+}
+
 
 module.exports = {
-  loadPage, waitElement_index, click, waitElement, set
+  loadPage, waitElement_index, click, waitElement, set, get_text_index
 };
