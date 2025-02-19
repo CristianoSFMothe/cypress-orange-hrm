@@ -1,10 +1,10 @@
-function loadPage(url) {
+function waitElement(el) {
   try {
-    cy.visit(url)
+    cy.get(el).and('be.visible');
   } catch (error) {
     cy.log('Exception caught: ' + error.message);
   }
-  return waitElement_index;
+  return waitElement;
 }
 
 function waitElement_index(el, index) {
@@ -16,23 +16,13 @@ function waitElement_index(el, index) {
   return waitElement_index;
 }
 
-function waitElement(el) {
+function loadPage(url) {
   try {
-    cy.get(el).and('be.visible');
+    cy.visit(url)
   } catch (error) {
     cy.log('Exception caught: ' + error.message);
   }
-  return waitElement;
-}
-
-function click(el) {
-  waitElement(el)
-  try {
-    cy.get(el).click();
-  } catch (error) {
-    cy.log('Exception caught: ' + error.message);
-  }
-  return click;
+  return waitElement_index;
 }
 
 function set(el, text) {
@@ -45,15 +35,84 @@ function set(el, text) {
   return set;
 }
 
-function get_text_index(el, index) {
+function set_Index(el, text, index) {
   waitElement(el)
-  let text
   try {
-    text = cy.get(el).eq(index).invoke('text');
+    cy.get(el).eq(index).type(text)
   } catch (error) {
     cy.log('Exception caught: ' + error.message);
   }
-  return text;
+  return set_Index;
+}
+
+function click(el) {
+  waitElement(el)
+  try {
+    cy.get(el).click();
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return click;
+}
+
+function clickForce(el) {
+  waitElement(el)
+  try {
+    cy.get(el).click({ force: true });
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return click;
+}
+
+function click_index(el, index) {
+  waitElement_index(el, index)
+  try {
+    cy.get(el).eq(index).click();
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return click_index;
+}
+
+function click_indexForce(el, index) {
+  waitElement_index(el, index)
+  try {
+    cy.get(el).eq(index).click({ force: true });
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return click_index;
+}
+
+function click_text(el, text) {
+  waitElement(el)
+  try {
+    cy.get(el).and('contain', text).click();
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return click_text;
+}
+
+function clear(el) {
+  waitElement(el)
+  try {
+    cy.get(el).clear();
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return clear;
+}
+
+function clear_index(el, index) {
+  waitElement_index(el, index)
+  try {
+    cy.get(el).eq(index).clear();
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return clear_index;
 }
 
 function get_text(el) {
@@ -67,19 +126,75 @@ function get_text(el) {
   return text;
 }
 
-function click_index(el, index) {
-  waitElement_index(el, index)
+function get_texts(el, index1, index2) {
+  waitElement(el)
   try {
-    cy.get(el).eq(index).click();
-    cy.log('Clicked on the Element ' + el + ' with Index ' + index)
+    return cy.get(el).then($elements => {
+      const text1 = $elements.eq(index1).text().trim();
+      const text2 = $elements.eq(index2).text().trim();
+      return [text1, text2]
+    })
   } catch (error) {
     cy.log('Exception caught: ' + error.message);
   }
-  return click_index;
 }
 
+function get_text_index(el, index) {
+  waitElement(el)
+  let text
+  try {
+    text = cy.get(el).eq(index).invoke('text');
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return text;
+}
+
+function scrollTo(el) {
+  waitElement(el)
+  try {
+    cy.get(el).scrollIntoView();
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return scrollTo;
+}
+
+function replaceIN(el, v1, v2) {
+  waitElement(el)
+  let corretValue = '';
+  try {
+    cy.get(el)
+      .should('be.visible')
+      .invoke('text')
+      .then(text => {
+        corretValue = text.replace(v1, v2);
+      })
+  } catch (error) {
+    cy.log('Exception caught when getting element text ' + el + ': ' + error.message);
+  }
+  return corretValue;
+}
+
+function splitIn(el, index) {
+  waitElement(el)
+  let corretValue = '';
+  try {
+    cy.get(el)
+      .should('be.visible')
+      .invoke('text')
+      .then(text => {
+        corretValue = text.split(' ')[index];
+      })
+  } catch (error) {
+    cy.log('Exception caught when getting element text ' + el + ': ' + error.message);
+  }
+  return corretValue;
+}
 
 module.exports = {
-  loadPage, waitElement_index, click, waitElement, set, get_text_index, get_text,
-  click_index
+  set, click, waitElement, waitElement_index, click_index,
+  clear, get_text, scrollTo, get_text_index, replaceIN, splitIn,
+  click_text, loadPage, set_Index, clickForce, click_indexForce, clear_index,
+  get_texts
 };
