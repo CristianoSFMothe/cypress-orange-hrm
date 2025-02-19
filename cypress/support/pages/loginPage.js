@@ -1,5 +1,5 @@
 let el = require('../elements/loginElements').LOGIN
-const { loadPage, click, set } = require('../actions.js');
+const { loadPage, click, set, waitElement, get_text_index, get_text } = require('../actions.js');
 
 export default {
   accessPage() {
@@ -19,4 +19,20 @@ export default {
     click(el.btnLogin)
     cy.wait(1500)
   },
+
+  validateLoginPage() {
+    return waitElement(el.validateLogin)
+  },
+
+  validateErrorMess() {
+    return get_text_index(el.validateErrorMess, 0)
+  },
+
+  validateErrorMess2() {
+    return get_text_index(el.validateErrorMess, 1)
+  },
+
+  validateErrorAlert() {
+    return get_text(el.alertError)
+  }
 }
