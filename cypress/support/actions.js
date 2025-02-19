@@ -67,7 +67,19 @@ function get_text(el) {
   return text;
 }
 
+function click_index(el, index) {
+  waitElement_index(el, index)
+  try {
+    cy.get(el).eq(index).click();
+    cy.log('Clicked on the Element ' + el + ' with Index ' + index)
+  } catch (error) {
+    cy.log('Exception caught: ' + error.message);
+  }
+  return click_index;
+}
+
 
 module.exports = {
-  loadPage, waitElement_index, click, waitElement, set, get_text_index, get_text
+  loadPage, waitElement_index, click, waitElement, set, get_text_index, get_text,
+  click_index
 };
