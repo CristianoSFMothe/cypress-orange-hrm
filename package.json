@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx cypress run --config video=false --env allure=true || true",
-    "allure:report": "allure generate allure-results",
-    "allure:clear": "rm -r allure-results/ allure-report || true",
-    "test:cy": "npm run allure:clear && npm run e2e && npm run allure:report"
+    "cy:open": "cypress open",
+    "cy:open:mobile": "cypress open --config viewportWidth=410,viewportHeight=860",
+    "test": "cypress run",
+    "test:mobile": "cypress run --config viewportWidth=410,viewportHeight=860",
+    "test:cloud": "cypress run --record"
   },
   "keywords": [],
   "author": "",
@@ -15,10 +16,6 @@
   "description": "",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@shelex/cypress-allure-plugin": "^2.40.2",
-    "allure-commandline": "^2.29.0",
-    "cypress": "13.12.0",
-    "cypress-file-upload": "^5.0.8",
-    "npm-run-all": "^4.1.5"
+    "cypress": "13.12.0"
   }
 }
