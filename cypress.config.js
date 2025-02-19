@@ -13,8 +13,22 @@ module.exports = defineConfig({
     hideCredentials: true,
     requestMode: true,
     hideXhr: true,
+    reporter: 'mochawesome',
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    "reporterOptions": {
+      "reportDir": "cypress/reports/mochawesome-report",
+      "overwrite": false,
+      "html": true,
+      "json": true,
+      "charts": true,
+      "reportFilename": "report",
+      "timestamp": "mmddyyyy_HHMMss",
+      "inlineAssets": true,
+      "toOpen": true,
+      "reportPageTitle": "Relatório de execução de testes E2E no site SauceDemo",
+      "embeddedScreenshots": true  //integrar prints no relatório
+    }
   },
 });
